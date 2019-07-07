@@ -41,9 +41,27 @@
 - However it will either be off or on to start with depending on when we press it
 - We want it to consistently start the same way each time
 
-### 4.
-
-
+### 4. Make a variable for determining the previous mode so we can know if we just transitioned
+- New code lines: (this goes at the top of the program)
+  - `bool prevSetTimerMode = true;`
+- New code lines: (these go right after the line buttonStateMachine(); in loop)
+  - `prevSetTimerMode = setTimerMode;`
+  - `Serial.print("1.) prevSetTimerMode: ");`
+  - `Serial.println(prevSetTimerMode);`
+  - `Serial.print("2.) setTimerMode: ");`
+  - `Serial.println(setTimerMode);`
+- Comment out this line:
+  - `Serial.println(timerCountDown);`
+- (Upload, watch serial monitor, click button, stop autoscroll and look back at the clicks)
+- Notice how the prevSetTimerMode is always the same as setTimerMode
+- This is not the behavior we want, we want it so that prevSetTimerMode is different to setTimerMode when transitioning from one mode to another
+- We just need to change when prevSetTimerMode gets updated
+### 5. Debug prevSetTimerMode
+- Move
+  - `prevSetTimerMode = setTimerMode;`
+- To the part to before the line 
+  - `buttonStateMachine();`
+- (Upload, watch serial monitor, click button, stop autoscroll and look back at the clicks)
 
 
 
