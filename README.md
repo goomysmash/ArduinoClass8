@@ -72,20 +72,105 @@
 - `if(prevSetTimerMode == 1 && setTimerMode == 0)`
 - `{Serial.println("Was in 'set timer mode' now in 'count down mode'");`
 - `blinkSwitchState=1;}`
+- `countDownTimerStart = millis();`
 - Comment out these lines:
   - `Serial.print("1.) prevSetTimerMode: ");`
   - `Serial.println(prevSetTimerMode);`
   - `Serial.print("2.) setTimerMode: ");`
   - `Serial.println(setTimerMode);`
 - (Upload, watch serial monitor, click button, watch 3 LEDs, built-in LED)
-- The built-in LED and the 3 counting LEDs line up fairly close now, and most importantly start blinking the same way every time
+- The built-in LED and the 3 counting LEDs line up now and start the same way every time
 - There's still the issue that the LED will either be on or off depending on or off in "set timer mode" depending on when we stop it in "count down mode"
 ### 7. Make the built-in LED in "set timer mode" always the same
+- Inside the brackets of the if statement
+  - `if(setTimerMode == true)`
+- Put the line:
+  - `digitalWrite(13, LOW);`
+- (Upload, move potentiometer, click button, watch 3 LEDs and built-in LED)
+- The built-in LED is always off while in "set timer mode" and flashes lined up with the other LEDs during "count down mode"
+- Awesome, we're almost done. Now we'll add a final mode "done mode"
+### 8. Make the variables for the "done mode" state machine
 - New code lines:
-digitalWrite(13, LOW);
+  - `bool doneMode = false; //boolean for whether we'll play the "done mode" animation`
+  - `int doneModeState = 0; //for determining which case we are in for our state machine`
+  - `long doneModeTimer = 0; //variable for starting the timer for the "done mode" animation`
+  - `long doneModeDelay = 50; //how long in milliseconds the delay will be between LED transitions`
+- Place these new lines in the else for "count down mode"
+  - `if(timerCountDown<=0)`
+  - `{doneMode=true;`
+  - `Serial.println("We're in doneMode!");}`
+  - `else`
+  - `{doneMode=false;`
+  - `Serial.println("We're not in doneMode yet");}`
+- (Upload, set 1 or 2 on the potentiometer, click button, watch serial monitor)
+- It sucessfully sets the "done mode" flag when we've counted down to the end
+### 9. Move some lines of code into the "not done mode" else statement
+- Cut and paste these lines into the "not done mode" else statement
+  - `blinkStateMachine();`
+  - `if(bitRead(timerCountDown, 0) == 1){digitalWrite(5, HIGH);}`
+  - `else{digitalWrite(5, LOW);}`
+  - `if(bitRead(timerCountDown, 1) == 1){digitalWrite(8, HIGH);}`
+  - `else{digitalWrite(8, LOW);}`
+  - `if(bitRead(timerCountDown, 2) == 1){digitalWrite(11, HIGH);}`
+  - `else{digitalWrite(11, LOW);}`
+  - `if((millis()-countDownTimerStart)>5000){`
+  - `countDownTimerStart = millis();`
+  - `timerCountDown = timerCountDown - 1;`
+  - `if (timerCountDown < 0){timerCountDown=0;}}`
+### 10. 
+- Add this line to the "done mode" if statement
+  - `doneModeStateMachine();`
+- Add this line to the "set timer mode" if statement so the "done mode" animation doesn't play while setting the timer
+  - `doneMode=false;`
+- Create the donemode state machine by copy and pasting the blink state machine, changing the variables, and adding all the LEDs
+  - `void doneModeStateMachine(){`
+  - `switch(doneModeState){`
+  - `case 0:`
+  - `if((millis()-doneModeTimer)>doneModeDelay){doneModeState=1;}`
+  - `break;`
+  - `case 1:`
+  - `doneModeTimer = millis();`
+  - `digitalWrite(13, HIGH);`
+  - `digitalWrite(5, HIGH);`
+  - `digitalWrite(8, HIGH);`
+  - `digitalWrite(11, HIGH);`
+  - `doneModeState = 2;`
+  - `break;`
+  - `case 2:`
+  - `if((millis()-doneModeTimer)>doneModeDelay){doneModeState=3;}`
+  - `break;`
+  - `case 3:`
+  - `doneModeTimer = millis();`
+  - `digitalWrite(13, LOW);`
+  - `digitalWrite(5, LOW);`
+  - `digitalWrite(8, LOW);`
+  - `digitalWrite(11, LOW);`
+  - `doneModeState = 0;`
+  - `break;}}`
 
-### 8. Not working, try syncing timercountdown with LED state machine
-long countDownDelay = 5000;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  
 
