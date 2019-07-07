@@ -62,14 +62,30 @@
 - To the part to before the line 
   - `buttonStateMachine();`
 - (Upload, watch serial monitor, click button, stop autoscroll and look back at the clicks)
+- It works the way we want, now we can use this to time exactly when we transition between modes
+### 6. Make the built-in LED always start the same after transitioning between modes
+- Edit this line to make the LED blink slower so we can see the effect better
+  - `long blinkDelay = 250;`
+- To
+  - `long blinkDelay = 1000;`
+- New code lines:
+- `if(prevSetTimerMode == 1 && setTimerMode == 0)`
+- `{Serial.println("Was in 'set timer mode' now in 'count down mode'");`
+- `blinkSwitchState=1;}`
+- Comment out these lines:
+  - `Serial.print("1.) prevSetTimerMode: ");`
+  - `Serial.println(prevSetTimerMode);`
+  - `Serial.print("2.) setTimerMode: ");`
+  - `Serial.println(setTimerMode);`
+- (Upload, watch serial monitor, click button, watch 3 LEDs, built-in LED)
+- The built-in LED and the 3 counting LEDs line up fairly close now, and most importantly start blinking the same way every time
+- There's still the issue that the LED will either be on or off depending on or off in "set timer mode" depending on when we stop it in "count down mode"
+### 7. Make the built-in LED in "set timer mode" always the same
+- New code lines:
+digitalWrite(13, LOW);
 
-
-
-
-
-
-
-
+### 8. Not working, try syncing timercountdown with LED state machine
+long countDownDelay = 5000;
 
  
 
