@@ -147,32 +147,10 @@
   - `digitalWrite(11, LOW);`
   - `doneModeState = 0;`
   - `break;}}`
+- (Upload, set 1 or 2 on the potentiometer, click button, watch LEDs)
+- Our kitchen timer is complete! We can set a timer, let it count down, then it will flash at us when it's done
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
+### Problems still persisting:
+- The timer is not very accurate (compare with a phone stopwatch)
+- A real LCD or 7-segment display would make this much more viable
 
