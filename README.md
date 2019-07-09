@@ -117,7 +117,7 @@
   - `countDownTimerStart = millis();`
   - `timerCountDown = timerCountDown - 1;`
   - `if (timerCountDown < 0){timerCountDown=0;}}`
-### 10. 
+### 10. Make a state machine for blinking all the LEDs once the countdown is done
 - Add this line to the "done mode" if statement
   - `doneModeStateMachine();`
 - Add this line to the "set timer mode" if statement so the "done mode" animation doesn't play while setting the timer
